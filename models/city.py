@@ -11,6 +11,7 @@ class City(BaseModel, Base):
     Attributes:
     __tablename__ : The name of the class City
     name: The names of the cities
+    Here we explain the user-place relationship
     """
     __tablename__ = 'cities'
     if getenv('HBNB_TYPE_STORAGE') == 'db':
