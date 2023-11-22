@@ -38,26 +38,25 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """Query the current database session for objects of the given class.
-        If cls is None, query all types of objects.
-        Returns:
-        Dict of queried classes in the format <class name>.<obj id> = obj.
+        """Query on the curret database session all objects of the given class.
+
+        If cls is None, queries all types of objects.
+
+        Return:
+            Dict of queried classes in the format <class name>.<obj id> = obj.
         """
-        classes_to_query = [State, City, User, Place, Review, Amenity]
-
-        if cls is not None:
-            # If cls is a string, try to find the corresponding class
-            if isinstance(cls, str):
-                cls = globals().get(cls, None)
-            # Check if cls is a valid class
-            if not inspect.isclass(cls) or cls not in classes_to_query:
-                raise ValueError("Invalid class specified.")
-            classes_to_query = [cls]
-            objs = []
-            for model_class in classes_to_query:
-                objs.extend(self.__session.query(model_class).all())
-
-            return {"{}.{}".format(type(o).__name__, o.id): o for o in objs}
+        if cls is None:
+            objs = self.__session.query(State).all()
+            objs.extend(self.__session.query(City).all())
+            objs.extend(self.__session.query(User).all())
+            objs.extend(self.__session.query(Place).all())
+            objs.extend(self.__session.query(Review).all())
+            objs.extend(self.__session.query(Amenity).all())
+        else:
+            if type(cls) == str:
+                cls = eval(cls)
+            objs = self.__session.query(cls)
+        return {"{}.{}".format(type(o).__name__, o.id): o for o in objs}
 
     def new(self, obj):
         """Add obj to the current database session."""
