@@ -8,12 +8,10 @@ from sqlalchemy.orm import relationship
 
 
 class User(BaseModel, Base):
-    """Represents a user for a MySQL database.
-
-    Inherits from SQLAlchemy Base and links to the MySQL table users.
-
-    Attributes:
-        __tablename__ (str): The name of the MySQL table to store users.
+    """This class defines a user by various attributes
+     Represent a user for a MySQL database.
+      Attributes:
+        __tablename__: represents the table name, users
         email: (sqlalchemy String): The user's email address.
         password (sqlalchemy String): The user's password.
         first_name (sqlalchemy String): The user's first name.
@@ -21,10 +19,17 @@ class User(BaseModel, Base):
         places (sqlalchemy relationship): The User-Place relationship.
         reviews (sqlalchemy relationship): The User-Review relationship.
     """
-    __tablename__ = "users"
-    email = Column(String(128), nullable=False)
-    password = Column(String(128), nullable=False)
-    first_name = Column(String(128))
-    last_name = Column(String(128))
-    places = relationship("Place", backref="user", cascade="delete")
-    reviews = relationship("Review", backref="user", cascade="delete")
+    __tablename__ = 'users'
+
+    if getenv('HBNB_TYPE_STORAGE') == 'db':
+        email = Column(String(128), nullable=False)
+        password = Column(String(128), nullable=False)
+        first_name = Column(String(128))
+        last_name = Column(String(128))
+        places = relationship("Place", backref="user", cascade="delete")
+        reviews = relationship("Review", backref="user", cascade="delete")
+    else:    
+        email = ''
+        password = ''
+        first_name = ''
+        last_name = ''
