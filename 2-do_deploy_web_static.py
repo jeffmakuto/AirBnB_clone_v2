@@ -5,7 +5,7 @@ from fabric.api import env
 from fabric.api import put
 from fabric.api import run
 
-env.hosts = ["54.9146.77.13", "18.234.192.116]
+env.hosts = ["54.146.77.13", "18.234.192.116]
 
 def do_pack():
     """ Compresses the contents of web_static folder into a .tgz archive."""
